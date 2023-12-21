@@ -1,5 +1,5 @@
 import { Product } from '../models/productModels.js';
-
+import ErrorHandler from "../utils/errorHandler.js";
 
 
 // Create product 
@@ -31,10 +31,7 @@ export const getAllProducts = async (req, res) => { // all users can see all pro
 export const updateProduct = async (req, res,next) => { // Admin only can update product
     let product = await Product.findById(req.params.id);
     if(!product){
-        return res.status(404).json({
-            success: false,
-            message: "Product not found"
-        });
+        return next(new ErrorHandler("Product not found",404));
     }
     product = await Product.findByIdAndUpdate(req.params.id,req.body,
     {
@@ -54,10 +51,7 @@ export const updateProduct = async (req, res,next) => { // Admin only can update
 export const deleteProduct = async (req, res,next) => { // Admin only can delete product
     const product = await Product.findById(req.params.id);
     if(!product){
-        return res.status(404).json({
-            success: false,
-            message: "Product not found"
-        });
+        return next(new ErrorHandler("Product not found",404));
     }
     await product.deleteOne();
     res.status(201).json({
@@ -72,10 +66,7 @@ export const deleteProduct = async (req, res,next) => { // Admin only can delete
 export const getProductDetails = async (req, res,next) => { // all users can see product details
     const product = await Product.findById(req.params.id);
     if(!product){
-        return res.status(404).json({
-            success: false,
-            message: "Product not found"
-        });
+        return next(new ErrorHandler("Product not found",404));
     }
     res.status(201).json({
         success: true,

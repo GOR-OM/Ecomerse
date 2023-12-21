@@ -2,7 +2,7 @@ import express  from 'express';
 import mongoose from 'mongoose';
 import { config } from "dotenv";
 import productRoutes from './routes/productRoute.js';
-
+import errorMiddleware from './middleware/error.js';
 const app = express();
 
 
@@ -15,7 +15,7 @@ config({
 
 // import json and  other things after that import routes
 app.use(express.json());
-
+app.use(errorMiddleware);
 
 //import routes : 
 app.use('/api/products',productRoutes);
