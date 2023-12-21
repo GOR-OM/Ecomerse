@@ -1,22 +1,22 @@
 import { Product } from '../models/productModels.js';
 import ErrorHandler from "../utils/errorHandler.js";
-
+import catchAsyncError from '../middleware/catchAsyncError.js';
 
 // Create product 
 
 
 
-export const createProduct = async (req, res,next) => {   // Admin only can create product
+export const createProduct = catchAsyncError( async (req, res,next) => {   // Admin only can create product
     const product = await Product.create(req.body);
     
     res.status(201).json({
         success: true,
         product
     });
-};
+});
 
 
-export const getAllProducts = async (req, res) => { // all users can see all products
+export const getAllProducts = catchAsyncError( async (req, res) => { // all users can see all products
     const products = await Product.find({});
 
     res.status(201).
@@ -25,10 +25,10 @@ export const getAllProducts = async (req, res) => { // all users can see all pro
         products
     });
 
-};
+});
 
 
-export const updateProduct = async (req, res,next) => { // Admin only can update product
+export const updateProduct = catchAsyncError( async (req, res,next) => { // Admin only can update product
     let product = await Product.findById(req.params.id);
     if(!product){
         return next(new ErrorHandler("Product not found",404));
@@ -45,10 +45,10 @@ export const updateProduct = async (req, res,next) => { // Admin only can update
         product
     });
 
-};
+});
 
 
-export const deleteProduct = async (req, res,next) => { // Admin only can delete product
+export const deleteProduct =catchAsyncError( async (req, res,next) => { // Admin only can delete product
     const product = await Product.findById(req.params.id);
     if(!product){
         return next(new ErrorHandler("Product not found",404));
@@ -59,11 +59,11 @@ export const deleteProduct = async (req, res,next) => { // Admin only can delete
         message: "Product is deleted"
     });
 
-};
+});
 
 // get product details 
 
-export const getProductDetails = async (req, res,next) => { // all users can see product details
+export const getProductDetails =catchAsyncError( async (req, res,next) => { // all users can see product details
     const product = await Product.findById(req.params.id);
     if(!product){
         return next(new ErrorHandler("Product not found",404));
@@ -72,4 +72,4 @@ export const getProductDetails = async (req, res,next) => { // all users can see
         success: true,
         product
     });
-};
+});
