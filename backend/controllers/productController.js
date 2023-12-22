@@ -1,6 +1,7 @@
 import { Product } from '../models/productModels.js';
 import ErrorHandler from "../utils/errorHandler.js";
 import catchAsyncError from '../middleware/catchAsyncError.js';
+import ApiFeatures from '../utils/apiFeatures.js';
 
 // Create product 
 
@@ -16,14 +17,22 @@ export const createProduct = catchAsyncError( async (req, res,next) => {   // Ad
 });
 
 
-export const getAllProducts = catchAsyncError( async (req, res) => { // all users can see all products
-    const products = await Product.find({});
+    const productsPerPage = 5;
 
+
+export const getAllProducts = catchAsyncError( async (req, res) => { // all users can see all products
+    const apifeature = new ApiFeatures(Product.find(),req.query).search().filter().pagination(productsPerPage);
+    
+    const products = await apifeature.query;
+    const count = await Product.countDocuments(); 
+    
     res.status(201).
     json({
         success: true,
-        products
+        products,
+        count
     });
+
 
 });
 
