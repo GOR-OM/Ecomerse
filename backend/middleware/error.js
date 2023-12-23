@@ -1,7 +1,7 @@
 import ErrorHandler from "../utils/errorHandler.js";
 
 
-export default (err,req,res,next) => {
+export default (req,res,next,err) => {
     err.statusCode = err.statusCode || 500;
     err.message = err.message || "Internal Server Error";
 
@@ -16,3 +16,4 @@ export default (err,req,res,next) => {
         message: err.message
     });
 };
+
