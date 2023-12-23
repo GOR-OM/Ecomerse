@@ -2,6 +2,7 @@ import express  from 'express';
 import mongoose from 'mongoose';
 import { config } from "dotenv";
 import productRoutes from './routes/productRoute.js';
+import userRoutes from './routes/userRoutes.js';
 import errorMiddleware from './middleware/error.js';
 const app = express();
 
@@ -19,6 +20,8 @@ app.use(errorMiddleware);
 
 //import routes : 
 app.use('/api/products',productRoutes);
+app.use('/api/users',userRoutes);
+
 
 
 
