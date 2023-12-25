@@ -22,6 +22,8 @@ app.use(express.urlencoded({extended : true}));
 app.use(errorMiddleware);
 app.use(cookieParser());
 
+
+
 //import routes : 
 app.use('/api/products',productRoutes);
 app.use('/api/users',userRoutes);
