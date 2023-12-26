@@ -224,3 +224,21 @@ export const getAllUsers = catchAsyncError(async (req, res, next) => {
 });
 
 
+// get user details (admin)
+
+export const getUserDetails = catchAsyncError(async (req, res, next) => {
+
+    const user = await User.findById(req.params.id);
+
+    if(!user){
+        return next(new ErrorHandler(`user not exist with id ${req.params.id}`, 404));
+    }
+
+    res.status(200).json({
+        success: true,
+        user
+    });
+
+});
+
+
