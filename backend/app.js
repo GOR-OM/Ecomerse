@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import { config } from "dotenv";
 import productRoutes from './routes/productRoute.js';
 import userRoutes from './routes/userRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
 import errorMiddleware from './middleware/error.js';
 import jwt from 'jsonwebtoken';
 import cookieParser from "cookie-parser";
@@ -27,7 +28,7 @@ app.use(cookieParser());
 //import routes : 
 app.use('/api/products',productRoutes);
 app.use('/api/users',userRoutes);
-
+app.use('/api/orders',orderRoutes);
 
 
 
