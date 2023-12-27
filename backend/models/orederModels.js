@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
-const orderSchema = mongoose.Schema({
-
+const orderSchema = new mongoose.Schema({
     shippingInfo: {
         address: {
             type: String,
@@ -17,108 +16,93 @@ const orderSchema = mongoose.Schema({
             required: true,
         },
 
+        country: {
+            type: String,
+            required: true,
+        },
         pinCode: {
             type: Number,
             required: true,
-            validator: function (v) {
-                return /\d{6}/.test(v);
-            },
-            message: props => `${props.value} is not a valid pincode!`
-            
         },
         phoneNo: {
             type: Number,
             required: true,
-            validator: function (v) {
-                return /\d{10}/.test(v);
-            },
-            message: props => `${props.value} is not a valid phone number!`
-            
         },
     },
-
     orderItems: [
         {
             name: {
                 type: String,
-                required: true
-            },
-            quantity: {
-                type: Number,
-                required: true
-            },
-            image: {
-                type: String,
-                required: true
+                required: true,
             },
             price: {
                 type: Number,
-                required: true
+                required: true,
+            },
+            quantity: {
+                type: Number,
+                required: true,
+            },
+            image: {
+                type: String,
+                required: true,
             },
             product: {
-                type: mongoose.Schema.Types.ObjectId,
+                type: mongoose.Schema.ObjectId,
                 ref: "Product",
-                required: true
-            }
-        }
+                required: true,
+            },
+        },
     ],
-
     user: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.ObjectId,
         ref: "User",
-        required: true
+        required: true,
     },
-
     paymentInfo: {
         id: {
             type: String,
-            required: true
+            required: true,
         },
         status: {
             type: String,
-            required: true
-
-        }
+            required: true,
+        },
     },
     paidAt: {
         type: Date,
-        required: true
+        required: true,
     },
-
     itemsPrice: {
         type: Number,
         required: true,
-        default: 0.0
+        default: 0,
     },
     taxPrice: {
         type: Number,
         required: true,
-        default: 0.0
+        default: 0,
     },
     shippingPrice: {
         type: Number,
         required: true,
-        default: 0.0
+        default: 0,
     },
     totalPrice: {
         type: Number,
         required: true,
-        default: 0.0
+        default: 0,
     },
-
     orderStatus: {
         type: String,
         required: true,
-        default: "Processing"
+        default: "Processing",
     },
-    deliveredAt: {
-        type: Date
-    },
+    deliveredAt: Date,
     createdAt: {
         type: Date,
-        default: Date.now
-    }
-
+        default: Date.now,
+    },
 });
 
 export const Order = mongoose.model("Order", orderSchema);
