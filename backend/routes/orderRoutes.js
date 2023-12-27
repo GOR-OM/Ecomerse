@@ -5,7 +5,7 @@ import { newOrder } from '../controllers/orderController.js';
 
 const router = express.Router();
 
-router.route('/new').get(isAuth,newOrder);
+router.route('/new').post(isAuth,newOrder);
 
 
 
