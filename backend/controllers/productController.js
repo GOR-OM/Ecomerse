@@ -136,3 +136,16 @@ export const productReview = catchAsyncError(async (req, res, next) => {
 
 });
 
+// get product reviews
+
+export const getProductReviews = catchAsyncError(async (req, res, next) => {
+
+    const product = await Product.findById(req.params.id);
+
+    res.status(200).json({
+        success: true,
+        reviews: product.reviews
+    });
+
+
+});
