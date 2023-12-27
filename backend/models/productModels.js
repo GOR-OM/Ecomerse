@@ -18,7 +18,9 @@ const productSchema = new mongoose.Schema({
     },
     ratings : {
         type : Number,
-        default : 0
+        default : 0,
+        min : [0, "Rating must be atleast 0"],
+        max : [5, "Rating cannot exceed 5"]
     },
     images : [
         {
@@ -34,25 +36,8 @@ const productSchema = new mongoose.Schema({
     ],
     category : {
         type : String,
-        required : [true, "Please select category for this product"],
-        enum : {
-            values : [
-                "Electronics",
-                "Cameras",
-                "Laptop",
-                "Accessories",
-                "Headphones",
-                "Food",
-                "Books",
-                "Clothes/Shoes",
-                "Beauty/Health",
-                "Sports",
-                "Outdoor",
-                "Home"
-            ],
-            message : "Please select correct category for product"
-        }
-    },
+        required : [true, "Please select category for this product"]
+        },
     stock : {
         type : Number,
         required : [true, "Please enter product stock"],
@@ -65,13 +50,20 @@ const productSchema = new mongoose.Schema({
     },
     reviews : [
         {
+            user: {
+                type: mongoose.Schema.ObjectId,
+                ref: "User",
+                required: true,
+            },
             name : {
                 type : String,
                 required : true
             },
             rating : {
                 type : Number,
-                required : true
+                required : true,
+                min : [0, "Rating must be atleast 0"],
+                max : [5, "Rating cannot exceed 5"]
             },
             comment : {
                 type : String,
@@ -83,11 +75,11 @@ const productSchema = new mongoose.Schema({
         type : Date,
         default : Date.now
     },
-    user : {
-        type : mongoose.Schema.ObjectId,
-        ref : "User",
-        required : true
-    }
+    user: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+        required: true,
+    },
 
 
     
