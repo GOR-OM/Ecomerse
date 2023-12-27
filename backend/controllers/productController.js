@@ -99,8 +99,8 @@ export const productReview = catchAsyncError(async (req, res, next) => {
         comment,
     };
 
-    if(!review.rating || review.rating > 5){
-        return next(new ErrorHandler("Please rate the product between 1 and 5",400));
+    if (!review.rating || review.rating > 5) {
+        return next(new ErrorHandler("Please rate the product between 1 and 5", 400));
     }
 
     const product = await Product.findById(productId);
@@ -116,7 +116,7 @@ export const productReview = catchAsyncError(async (req, res, next) => {
         });
     } else {
         product.reviews.push(review);
-        product.numberOfReviews  = product.reviews.length;
+        product.numberOfReviews = product.reviews.length;
     }
 
     let avg = 0;
@@ -140,11 +140,66 @@ export const productReview = catchAsyncError(async (req, res, next) => {
 
 export const getProductReviews = catchAsyncError(async (req, res, next) => {
 
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.query.id);
+
+    if (!product) {
+        return next(new ErrorHandler("Product not found", 404));
+    }
 
     res.status(200).json({
         success: true,
         reviews: product.reviews
+    });
+
+
+});
+
+// delete product review   (admin)
+
+export const deleteReview = catchAsyncError(async (req, res, next) => {
+
+    const product = await Product.findById(req.query.productId);
+
+    if (!product) {
+        return next(new ErrorHandler("Product not found", 404));
+    }
+
+    const reviews = product.reviews.filter(
+        (rev) => rev.user._id.toString() !== req.user._id.toString()
+    );
+
+    let avg = 0;
+
+    reviews.forEach((rev) => {
+        avg += rev.rating;
+    });
+
+    let ratings = 0;
+
+    if (reviews.length === 0) {
+        ratings = 0;
+    } else {
+        ratings = avg / reviews.length;
+    }
+
+    const numOfReviews = reviews.length;
+
+    await Product.findByIdAndUpdate(
+        req.query.productId,
+        {
+            reviews,
+            ratings,
+            numOfReviews,
+        },
+        {
+            new: true,
+            runValidators: true,
+            useFindAndModify: false,
+        }
+    );
+
+    res.status(200).json({
+        success: true,
     });
 
 
